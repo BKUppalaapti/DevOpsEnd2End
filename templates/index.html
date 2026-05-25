@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Submission Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .form-group.required label::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .stories-section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stories-section h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .story-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 6px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .story-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .story-card .story-author {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .story-card .story-about {
+            color: #555;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .story-card .story-text {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .story-card .story-meta {
+            font-size: 0.8em;
+            color: #999;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        .no-stories {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+            font-size: 1.1em;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📖 Story Submission Platform</h1>
+            <p>Share your stories with our community</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Story Submission Form -->
+            <div class="form-section">
+                <h2>Submit Your Story</h2>
+
+                <div id="alertContainer"></div>
+
+                <form id="storyForm">
+                    <div class="form-group required">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="first_name" required placeholder="John">
+                    </div>
+
+                    <div class="form-group required">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="last_name" required placeholder="Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" name="phone_number" placeholder="+1 (555) 123-4567">
+                    </div>
+
+                    <div class="form-group required">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required placeholder="john@example.com">
+                    </div>
+
+                    <div class="form-group required">
+                        <label for="storyName">Story Name</label>
+                        <input type="text" id="storyName" name="story_name" required placeholder="The Adventure Begins">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="storyAbout">Story About (Topic/Theme)</label>
+                        <input type="text" id="storyAbout" name="story_about" placeholder="e.g., Adventure, Mystery, Fantasy">
+                    </div>
+
+                    <div class="form-group required">
+                        <label for="storyWriting">Story Writing</label>
+                        <textarea id="storyWriting" name="story_writing" required placeholder="Write your story here..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">Submit Story</button>
+                </form>
+            </div>
+
+            <!-- Stories Display Section -->
+            <div class="stories-section">
+                <h2>📚 Recent Stories</h2>
+                <div id="storiesContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Alert helper functions
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${type}`;
+            alertDiv.textContent = message;
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertDiv);
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Form submission handler
+        document.getElementById('storyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const formData = new FormData(document.getElementById('storyForm'));
+
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('✅ Story submitted successfully!', 'success');
+                    document.getElementById('storyForm').reset();
+                    // Refresh stories list
+                    loadStories();
+                } else {
+                    showAlert(`❌ ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showAlert(`❌ Error submitting story: ${error.message}`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+
+        // Load and display all stories
+        async function loadStories() {
+            const container = document.getElementById('storiesContainer');
+
+            try {
+                const response = await fetch('/stories');
+                const data = await response.json();
+
+                if (data.success && data.stories.length > 0) {
+                    const storiesHTML = data.stories.map(story => `
+                        <div class="story-card">
+                            <h3>${escapeHtml(story.story_name)}</h3>
+                            <div class="story-author">
+                                👤 ${escapeHtml(story.first_name)} ${escapeHtml(story.last_name)}
+                                ${story.email ? `<br>📧 ${escapeHtml(story.email)}` : ''}
+                            </div>
+                            ${story.story_about ? `<div class="story-about">📝 ${escapeHtml(story.story_about)}</div>` : ''}
+                            <div class="story-text">${escapeHtml(story.story_writing).replace(/\n/g, '<br>')}</div>
+                            <div class="story-meta">
+                                📅 ${new Date(story.timestamp).toLocaleString()}
+                            </div>
+                        </div>
+                    `).join('');
+
+                    container.innerHTML = storiesHTML;
+                } else {
+                    container.innerHTML = '<div class="no-stories">No stories submitted yet. Be the first to share!</div>';
+                }
+            } catch (error) {
+                container.innerHTML = `<div class="no-stories">Error loading stories: ${error.message}</div>`;
+            }
+        }
+
+        // Helper function to escape HTML special characters
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load stories on page load
+        document.addEventListener('DOMContentLoaded', loadStories);
+
+        // Auto-refresh stories every 10 seconds
+        setInterval(loadStories, 10000);
+    </script>
+</body>
+</html>
