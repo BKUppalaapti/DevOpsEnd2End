@@ -1,0 +1,32 @@
+---
+# PersistentVolume for story storage (hostPath - local node storage)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: story-pv
+  namespace: default
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  hostPath:
+    path: /mnt/data/stories
+    type: DirectoryOrCreate
+
+---
+# PersistentVolumeClaim for the story-app deployment
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: story-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: story-pv

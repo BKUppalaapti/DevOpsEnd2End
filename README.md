@@ -1,2 +1,4 @@
 # DevOpsEnd2End
 # I want to develop python web application using flask to run a form for user input the details about the stories can each user write using docker and kubernetes locally.
+# I want to use github actions for pipeline automation on pull to main from develop branch but to develop branch i will push using feature branch.
+# Also When I pull the the application should start running on locak k8s so that users can access it locally. When the user input the form with details of first name, last name, phone number, email, Story Name, Story About, and Story writing then these will be stored as files in the backend as one file for each story inputed.
